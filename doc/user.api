@@ -1,0 +1,37 @@
+syntax = "v1"
+
+info (
+    title: "user doc"
+)
+
+type (
+
+    User {
+        ID int64 `json:"id"`
+        Email string `json:"email"`
+        Token string `json:"token"`
+        UserName string `json:"username"`
+        Bio string `json:"bio"`
+    }
+
+    RegistrationReq {
+        UserName string `json:"username"`
+        Email string `json:"email"`
+        Password string `json:"password"`
+    }
+
+    LoginReq {
+        Email string `json:"email"`
+        Password string `json:"password"`
+    }
+
+    UpdateUserReq {
+        Email string `json:"email"`
+        Bio string `json:"bio"`
+    }
+
+    UpdatePasswordReq {
+        NewPassword string `json:"newPassword"`
+        ConfirmPassword string `json:"confirmPassword"`
+    }
+)

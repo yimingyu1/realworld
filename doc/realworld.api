@@ -1,0 +1,147 @@
+syntax = "v1"
+
+info (
+	title:   "realworld"
+	desc:    "通过Real World项目来熟悉zo_zero框架的使用"
+	version: "v1"
+)
+
+import (
+	"user.api"
+	"profile.api"
+	"article.api"
+	"comment.api"
+	"tag.api"
+)
+
+@server (
+	prefix:  /v1
+	group:   user
+	timeout: 3s
+)
+service realworld {
+	@doc "注册用户"
+	@handler registration
+	post /user/registration (RegistrationReq) returns (User)
+
+	@doc "登录"
+	@handler login
+	post /users/login (LoginReq) returns (User)
+
+	@doc "登出"
+	@handler logout
+	post /users/logout returns (string)
+}
+
+@server (
+	prefix:     /v1
+	group:      user
+	timeout:    3s
+	middleware: AuthenticationMiddleware
+)
+service realworld {
+	@doc "获取用户信息"
+	@handler getUser
+	get /user returns (User)
+
+	@doc "更新用户信息"
+	@handler updateUser
+	put /user (UpdateUserReq) returns (User)
+
+	@doc "修改密码"
+	@handler updatePassword
+	put /user/update-password (UpdatePasswordReq) returns (string)
+}
+
+@server (
+	prefix:     /v1
+	group:      profile
+	timeout:    3s
+	middleware: AuthenticationMiddleware
+)
+service realworld {
+	@doc "查看用户主页"
+	@handler getProfile
+	get /profiles/:userId (GetProfileReq) returns (Profile)
+
+	@doc "关注用户"
+	@handler followUser
+	post /profiles/:userId/follow (FollowUserReq) returns (string)
+
+	@doc "取消关注用户"
+	@handler unfollowUser
+	delete /profiles/:userId/follow (UnfollowUserReq) returns (string)
+}
+
+@server (
+	prefix:     /v1
+	group:      profile
+	timeout:    3s
+	middleware: AuthenticationMiddleware
+)
+service realworld {
+	@doc "获取文章列表"
+	@handler getArticleList
+	get /articles (GetArticleListReq) returns (ArticleList)
+
+	@doc "查看文章"
+	@handler getArticle
+	get /articles/:articleId (GetArticleReq) returns (Article)
+
+	@doc "创建文章"
+	@handler createArticle
+	post /articles (CreateArticleReq) returns (Article)
+
+	@doc "更新文章"
+	@handler updateArticle
+	put /articles/:articleId (UpdateArticleReq) returns (Article)
+
+	@doc "删除文章"
+	@handler delArticle
+	delete /articles/:articleId (DeleteArticleReq) returns (string)
+
+	@doc "关注文章"
+	@handler favoriteArticle
+	post /articles/:articleId/favorite (FavoriteArticleReq) returns (string)
+
+	@doc "取消关注文章"
+	@handler unfavoriteArticle
+	delete /articles/:articleId/favorite (UnfavoriteArticleReq) returns (string)
+}
+
+@server (
+	prefix:     /v1
+	group:      comment
+	timeout:    3s
+	middleware: AuthenticationMiddleware
+)
+service realworld {
+	@doc "新增评论"
+	@handler addComment
+	post /articles/:articleId/comments (AddCommentReq) returns (Comment)
+
+	@doc "获取评论列表"
+	@handler getCommentList
+	get /api/articles/:articleId/comments (GetCommentListReq) returns ([]Comment)
+
+	@doc "删除评论"
+	@handler deleteComment
+	delete /api/articles/:articleId/comments/:commentId (DelCommentReq) returns (string)
+}
+
+@server (
+	prefix:     /v1
+	group:      comment
+	timeout:    3s
+	middleware: AuthenticationMiddleware
+)
+service realworld {
+	@doc "新增tag"
+	@handler addTag
+	post /tag (AddTagReq) returns (Tag)
+
+	@doc "获取tagList"
+	@handler getTagList
+	get /tags returns ([]Tag)
+}
+

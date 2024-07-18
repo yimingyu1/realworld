@@ -1,0 +1,36 @@
+syntax = "v1"
+
+info(
+    title: "comment doc"
+)
+
+import (
+    "user.api"
+)
+
+type (
+    Comment {
+        Id int64  `json:"id"`
+        CreatedAt string `json:"createdAt"`
+        UpdatedAt string `json:"updatedAt"`
+        Body string `json:"body"`
+        Author User `json:"author"`
+    }
+
+    AddCommentReq {
+        ArticleId int64 `json:"articleId"`
+        Body string `json:"body"`
+    }
+
+    GetCommentListReq {
+        ArticleId int64 `json:"articleId"`
+    }
+
+    DelCommentReq {
+        ArticleId int64 `json:"articleId"`
+        CommentId int64 `json:"commentId"`
+    }
+
+
+
+)

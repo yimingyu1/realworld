@@ -1,0 +1,20 @@
+Name: realworld
+Host: 0.0.0.0
+Port: 8888
+
+# jwtAuth
+JwtAuth:
+  AccessSecret: n1enkS4Ict8A2f1JEB3R2Ad62VC3CsTLRPvi5is6k/s=
+
+# redis
+Redis:
+  Host: 127.0.0.1:6379
+  Type: node
+# DB
+DB:
+  DataSource: root:11111@tcp(127.0.0.1:3306)/realworld?charset=utf8mb4&parseTime=True&loc=Local
+
+# 日志配置
+Log:
+  ServiceName: realworld
+  Encoding: plain

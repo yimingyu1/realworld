@@ -1,0 +1,17 @@
+syntax = "v1"
+
+info(
+    title: "tag doc"
+)
+
+type (
+    Tag {
+        Id int64 `json:"id"`
+        TagName string `json:"tagName"`
+    }
+
+    AddTagReq {
+        TagName string `json:"tagName"`
+    }
+
+)

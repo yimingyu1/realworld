@@ -1,0 +1,67 @@
+syntax = "v1"
+
+info(
+    title: "article doc"
+)
+
+import (
+    "profile.api"
+)
+
+type (
+    Article {
+        Id int64 `json:"id"`
+        Title string `json:"title"`
+        Description string `json:"description"`
+        Body string `json:"body"`
+        TagList []string `json:"tagList"`
+        CreatedAt string `json:"createdAt"`
+        UpdatedAt string `json:"updatedAt"`
+        Favorited bool `json:"favorited"`
+        FavoritesCount int64 `json:"favoritesCount"`
+        Author Profile `json:"author"`
+    }
+
+    GetArticleListReq {
+        Tag string `json:"tag"`
+        Author string `json:"author"`
+        Favorited string `json:"favorited"`
+        Limit int64 `json:"limit"`
+        Offset int64 `json:"offset"`
+    }
+
+    ArticleList {
+        Articles []Article `json:"articles"`
+        ArticlesCount int64 `json:"articlesCount"`
+    }
+
+    GetArticleReq {
+        ArticleId int64 `json:"articleId"`
+    }
+
+
+    CreateArticleReq {
+        Title string `json:"title"`
+        Description string `json:"description"`
+        Body string `json:"body"`
+        TagList []int64 `json:"tagList"`
+    }
+
+    UpdateArticleReq {
+        ArticleId int64 `json:"articleId"`
+        Body string `json:"body"`
+    }
+
+    DeleteArticleReq {
+        ArticleId int64 `json:"articleId"`
+    }
+
+    FavoriteArticleReq {
+        ArticleId int64 `json:"articleId"`
+    }
+
+    UnfavoriteArticleReq {
+        ArticleId int64 `json:"articleId"`
+    }
+
+)

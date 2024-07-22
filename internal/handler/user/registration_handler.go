@@ -1,10 +1,9 @@
 package user
 
 import (
-	"net/http"
-	"realworld/common/result"
-
 	"github.com/zeromicro/go-zero/rest/httpx"
+	xhttp "github.com/zeromicro/x/http"
+	"net/http"
 	"realworld/cmd/api/internal/logic/user"
 	"realworld/cmd/api/internal/svc"
 	"realworld/cmd/api/internal/types"
@@ -22,9 +21,9 @@ func RegistrationHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := user.NewRegistrationLogic(r.Context(), svcCtx)
 		resp, err := l.Registration(&req)
 		if err != nil {
-			result.WriteFailResp(r.Context(), w, err.Error())
+			xhttp.JsonBaseResponseCtx(r.Context(), w, err)
 		} else {
-			result.WriteSuccessResp(r.Context(), w, resp)
+			xhttp.JsonBaseResponseCtx(r.Context(), w, resp)
 		}
 	}
 }

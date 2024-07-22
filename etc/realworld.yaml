@@ -5,6 +5,7 @@ Port: 8888
 # jwtAuth
 JwtAuth:
   AccessSecret: n1enkS4Ict8A2f1JEB3R2Ad62VC3CsTLRPvi5is6k/s=
+  AccessExpire: 2592000
 
 # redis
 Redis:
@@ -18,3 +19,6 @@ DB:
 Log:
   ServiceName: realworld
   Encoding: plain
+  TimeFormat: 2006-01-02 15:04:05.000
+  Mode: file
+  KeepDays: 7

@@ -6,8 +6,8 @@ import (
 	"errors"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"realworld/common/constant"
-	"realworld/common/token"
 	"realworld/common/tool"
+	"realworld/common/xtoken"
 	"realworld/model"
 
 	"realworld/cmd/api/internal/svc"
@@ -22,7 +22,7 @@ type RegistrationLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-// 注册用户
+// NewRegistrationLogic 注册用户
 func NewRegistrationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegistrationLogic {
 	return &RegistrationLogic{
 		Logger: logx.WithContext(ctx),
@@ -31,7 +31,7 @@ func NewRegistrationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Regi
 	}
 }
 
-func (l *RegistrationLogic) Registration(req *types.RegistrationReq) (resp *types.User, err error) {
+func (l *RegistrationLogic) Registration(req *types.RegistrationReq) (resp *types.RegistrationUserResp, err error) {
 	user, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, req.Email)
 	if err != nil && !errors.Is(err, sqlx.ErrNotFound) {
 		logx.Errorf("find user by email failed: %v", err)
@@ -63,19 +63,21 @@ func (l *RegistrationLogic) Registration(req *types.RegistrationReq) (resp *type
 		userId = user.Id
 	}
 	// 生成token
-	userToken, _ := token.GenerateToken(userId, l.svcCtx.Config.JwtAuth.AccessSecret, req.UserName, req.Email)
+	userToken, _ := xtoken.GenerateToken(userId, l.svcCtx.Config.JwtAuth.AccessSecret, req.UserName, req.Email)
 	// 保存token到redis中
-	err = l.svcCtx.RedisClient.Setex(tool.GetUserTokenCacheKey(userId), userToken, constant.UserLoginExpire)
+	err = l.svcCtx.RedisClient.Setex(tool.GetUserTokenCacheKey(userId), userToken, l.svcCtx.Config.JwtAuth.AccessExpire)
 	if err != nil {
-		logx.Errorf("save user token to redis failed: %v", err)
-		err = errors.New("save user token to redis failed")
+		logx.Errorf("save user xtoken to redis failed: %v", err)
+		err = errors.New("save user xtoken to redis failed")
 		return
 	}
-	return &types.User{
-		ID:       userId,
-		UserName: req.UserName,
-		Email:    req.Email,
-		Token:    userToken,
-		Bio:      "",
+	return &types.RegistrationUserResp{
+		UserResp: types.UserResp{
+			ID:       userId,
+			UserName: req.UserName,
+			Email:    req.Email,
+			Bio:      "",
+		},
+		Token: userToken,
 	}, nil
 }

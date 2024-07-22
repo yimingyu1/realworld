@@ -22,11 +22,11 @@ import (
 service realworld {
 	@doc "注册用户"
 	@handler registration
-	post /user/registration (RegistrationReq) returns (User)
+	post /user/registration (RegistrationReq) returns (RegistrationUserResp)
 
 	@doc "登录"
 	@handler login
-	post /users/login (LoginReq) returns (User)
+	post /users/login (LoginReq) returns (UserResp)
 
 	@doc "登出"
 	@handler logout
@@ -42,11 +42,11 @@ service realworld {
 service realworld {
 	@doc "获取用户信息"
 	@handler getUser
-	get /user returns (User)
+	get /user returns (UserResp)
 
 	@doc "更新用户信息"
 	@handler updateUser
-	put /user (UpdateUserReq) returns (User)
+	put /user (UpdateUserReq) returns (UserResp)
 
 	@doc "修改密码"
 	@handler updatePassword

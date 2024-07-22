@@ -29,11 +29,11 @@ type ArticleList struct {
 }
 
 type Comment struct {
-	Id        int64  `json:"id"`
-	CreatedAt string `json:"createdAt"`
-	UpdatedAt string `json:"updatedAt"`
-	Body      string `json:"body"`
-	Author    User   `json:"author"`
+	Id        int64    `json:"id"`
+	CreatedAt string   `json:"createdAt"`
+	UpdatedAt string   `json:"updatedAt"`
+	Body      string   `json:"body"`
+	Author    UserResp `json:"author"`
 }
 
 type CreateArticleReq struct {
@@ -93,9 +93,14 @@ type Profile struct {
 }
 
 type RegistrationReq struct {
-	UserName string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	UserName string `json:"username" validate:"required" `
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=6,max=20"`
+}
+
+type RegistrationUserResp struct {
+	UserResp
+	Token string `json:"token"`
 }
 
 type Tag struct {
@@ -126,10 +131,9 @@ type UpdateUserReq struct {
 	Bio   string `json:"bio"`
 }
 
-type User struct {
+type UserResp struct {
 	ID       int64  `json:"id"`
 	Email    string `json:"email"`
-	Token    string `json:"token"`
 	UserName string `json:"username"`
 	Bio      string `json:"bio"`
 }

@@ -14,7 +14,7 @@ type (
         CreatedAt string `json:"createdAt"`
         UpdatedAt string `json:"updatedAt"`
         Body string `json:"body"`
-        Author User `json:"author"`
+        Author UserResp `json:"author"`
     }
 
     AddCommentReq {

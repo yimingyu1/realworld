@@ -24,7 +24,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	})
 	return &ServiceContext{
 		Config:                   c,
-		AuthenticationMiddleware: middleware.NewAuthenticationMiddleware().Handle,
+		AuthenticationMiddleware: middleware.NewAuthenticationMiddleware(redisClient, c).Handle,
 		UserModel:                model.NewUserModel(mysqlConn),
 		RedisClient:              redisClient,
 	}

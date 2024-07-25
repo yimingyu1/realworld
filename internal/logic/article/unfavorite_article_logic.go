@@ -1,4 +1,4 @@
-package profile
+package article
 
 import (
 	"context"
@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetProfileLogic struct {
+type UnfavoriteArticleLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-// 查看用户主页
-func NewGetProfileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetProfileLogic {
-	return &GetProfileLogic{
+// 取消关注文章
+func NewUnfavoriteArticleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UnfavoriteArticleLogic {
+	return &UnfavoriteArticleLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetProfileLogic) GetProfile(req *types.GetProfileReq) (resp *types.ProfileResp, err error) {
+func (l *UnfavoriteArticleLogic) UnfavoriteArticle(req *types.UnfavoriteArticleReq) (resp string, err error) {
 	// todo: add your logic here and delete this line
 
 	return

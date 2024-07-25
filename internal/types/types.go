@@ -11,16 +11,16 @@ type AddTagReq struct {
 }
 
 type Article struct {
-	Id             int64    `json:"id"`
-	Title          string   `json:"title"`
-	Description    string   `json:"description"`
-	Body           string   `json:"body"`
-	TagList        []string `json:"tagList"`
-	CreatedAt      string   `json:"createdAt"`
-	UpdatedAt      string   `json:"updatedAt"`
-	Favorited      bool     `json:"favorited"`
-	FavoritesCount int64    `json:"favoritesCount"`
-	Author         Profile  `json:"author"`
+	Id             int64       `json:"id"`
+	Title          string      `json:"title"`
+	Description    string      `json:"description"`
+	Body           string      `json:"body"`
+	TagList        []string    `json:"tagList"`
+	CreatedAt      string      `json:"createdAt"`
+	UpdatedAt      string      `json:"updatedAt"`
+	Favorited      bool        `json:"favorited"`
+	FavoritesCount int64       `json:"favoritesCount"`
+	Author         ProfileResp `json:"author"`
 }
 
 type ArticleList struct {
@@ -85,7 +85,7 @@ type LoginReq struct {
 	Password string `json:"password"`
 }
 
-type Profile struct {
+type ProfileResp struct {
 	UserId    int64  `json:"userId"`
 	UserName  string `json:"username"`
 	Bio       string `json:"bio"`

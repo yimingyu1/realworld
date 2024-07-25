@@ -62,7 +62,7 @@ service realworld {
 service realworld {
 	@doc "查看用户主页"
 	@handler getProfile
-	get /profiles/:userId (GetProfileReq) returns (Profile)
+	get /profiles/:userId (GetProfileReq) returns (ProfileResp)
 
 	@doc "关注用户"
 	@handler followUser
@@ -75,7 +75,7 @@ service realworld {
 
 @server (
 	prefix:     /v1
-	group:      profile
+	group:      article
 	timeout:    3s
 	middleware: AuthenticationMiddleware
 )

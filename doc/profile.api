@@ -6,7 +6,7 @@ info (
 
 type (
 
-    Profile {
+    ProfileResp {
         UserId int64 `json:"userId"`
         UserName string `json:"username"`
         Bio string `json:"bio"`

@@ -19,7 +19,7 @@ type (
         UpdatedAt string `json:"updatedAt"`
         Favorited bool `json:"favorited"`
         FavoritesCount int64 `json:"favoritesCount"`
-        Author Profile `json:"author"`
+        Author ProfileResp `json:"author"`
     }
 
     GetArticleListReq {
@@ -41,10 +41,10 @@ type (
 
 
     CreateArticleReq {
-        Title string `json:"title"`
-        Description string `json:"description"`
-        Body string `json:"body"`
-        TagList []int64 `json:"tagList"`
+        Title string `json:"title" validate:"required"`
+        Description string `json:"description" validate:"required"`
+        Body string `json:"body" validate:"required"`
+        TagList []int64 `json:"tagList, optional"`
     }
 
     UpdateArticleReq {

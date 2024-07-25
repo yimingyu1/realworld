@@ -1,9 +1,9 @@
 package user
 
 import (
+	xhttp "github.com/zeromicro/x/http"
 	"net/http"
 
-	"github.com/zeromicro/go-zero/rest/httpx"
 	"realworld/cmd/api/internal/logic/user"
 	"realworld/cmd/api/internal/svc"
 )
@@ -14,9 +14,9 @@ func LogoutHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := user.NewLogoutLogic(r.Context(), svcCtx)
 		resp, err := l.Logout()
 		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
+			xhttp.JsonBaseResponseCtx(r.Context(), w, err)
 		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
+			xhttp.JsonBaseResponseCtx(r.Context(), w, resp)
 		}
 	}
 }

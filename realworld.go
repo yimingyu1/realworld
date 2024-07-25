@@ -4,10 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/rest/httpx"
 	"realworld/cmd/api/internal/config"
 	"realworld/cmd/api/internal/handler"
 	"realworld/cmd/api/internal/svc"
-	"realworld/common/clog"
+	"realworld/common/xlog"
+	"realworld/common/xvalidate"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -24,7 +26,8 @@ func main() {
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
 	fileWriter := logx.Reset()
-	writer, err := clog.NewMultiWriter(fileWriter)
+	writer, err := xlog.NewMultiWriter(fileWriter)
+	httpx.SetValidator(xvalidate.NewApiValidate())
 	logx.Must(err)
 	logx.SetWriter(writer)
 	ctx := svc.NewServiceContext(c)

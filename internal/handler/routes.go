@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	article "realworld/cmd/api/internal/handler/article"
 	comment "realworld/cmd/api/internal/handler/comment"
 	profile "realworld/cmd/api/internal/handler/profile"
 	user "realworld/cmd/api/internal/handler/user"
@@ -14,6 +15,58 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthenticationMiddleware},
+			[]rest.Route{
+				{
+					// 获取文章列表
+					Method:  http.MethodGet,
+					Path:    "/articles",
+					Handler: article.GetArticleListHandler(serverCtx),
+				},
+				{
+					// 创建文章
+					Method:  http.MethodPost,
+					Path:    "/articles",
+					Handler: article.CreateArticleHandler(serverCtx),
+				},
+				{
+					// 查看文章
+					Method:  http.MethodGet,
+					Path:    "/articles/:articleId",
+					Handler: article.GetArticleHandler(serverCtx),
+				},
+				{
+					// 更新文章
+					Method:  http.MethodPut,
+					Path:    "/articles/:articleId",
+					Handler: article.UpdateArticleHandler(serverCtx),
+				},
+				{
+					// 删除文章
+					Method:  http.MethodDelete,
+					Path:    "/articles/:articleId",
+					Handler: article.DelArticleHandler(serverCtx),
+				},
+				{
+					// 关注文章
+					Method:  http.MethodPost,
+					Path:    "/articles/:articleId/favorite",
+					Handler: article.FavoriteArticleHandler(serverCtx),
+				},
+				{
+					// 取消关注文章
+					Method:  http.MethodDelete,
+					Path:    "/articles/:articleId/favorite",
+					Handler: article.UnfavoriteArticleHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
+		rest.WithTimeout(3000*time.Millisecond),
+	)
+
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.AuthenticationMiddleware},
@@ -85,58 +138,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodDelete,
 					Path:    "/profiles/:userId/follow",
 					Handler: profile.UnfollowUserHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/v1"),
-		rest.WithTimeout(3000*time.Millisecond),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.AuthenticationMiddleware},
-			[]rest.Route{
-				{
-					// 获取文章列表
-					Method:  http.MethodGet,
-					Path:    "/articles",
-					Handler: profile.GetArticleListHandler(serverCtx),
-				},
-				{
-					// 创建文章
-					Method:  http.MethodPost,
-					Path:    "/articles",
-					Handler: profile.CreateArticleHandler(serverCtx),
-				},
-				{
-					// 查看文章
-					Method:  http.MethodGet,
-					Path:    "/articles/:articleId",
-					Handler: profile.GetArticleHandler(serverCtx),
-				},
-				{
-					// 更新文章
-					Method:  http.MethodPut,
-					Path:    "/articles/:articleId",
-					Handler: profile.UpdateArticleHandler(serverCtx),
-				},
-				{
-					// 删除文章
-					Method:  http.MethodDelete,
-					Path:    "/articles/:articleId",
-					Handler: profile.DelArticleHandler(serverCtx),
-				},
-				{
-					// 关注文章
-					Method:  http.MethodPost,
-					Path:    "/articles/:articleId/favorite",
-					Handler: profile.FavoriteArticleHandler(serverCtx),
-				},
-				{
-					// 取消关注文章
-					Method:  http.MethodDelete,
-					Path:    "/articles/:articleId/favorite",
-					Handler: profile.UnfavoriteArticleHandler(serverCtx),
 				},
 			}...,
 		),

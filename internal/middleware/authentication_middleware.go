@@ -10,8 +10,8 @@ import (
 	"github.com/zeromicro/x/errors"
 	"net/http"
 	"realworld/cmd/api/internal/config"
-	"realworld/common/tool"
 	"realworld/common/xtoken"
+	"realworld/common/xtools"
 )
 
 type AuthenticationMiddleware struct {
@@ -56,7 +56,7 @@ func (m *AuthenticationMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			httpx.WriteJsonCtx(r.Context(), w, http.StatusUnauthorized, err)
 			return
 		}
-		tokenFromRedis, err := m.RedisClient.GetCtx(context.Background(), tool.GetUserTokenCacheKey(claims.UserId))
+		tokenFromRedis, err := m.RedisClient.GetCtx(context.Background(), xtools.GetUserTokenCacheKey(claims.UserId))
 		if err != nil {
 			logx.Errorf("get user xtoken error: %v", err)
 			httpx.WriteJsonCtx(r.Context(), w, http.StatusInternalServerError, err)

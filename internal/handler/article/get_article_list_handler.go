@@ -1,25 +1,25 @@
-package profile
+package article
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"realworld/cmd/api/internal/logic/profile"
+	"realworld/cmd/api/internal/logic/article"
 	"realworld/cmd/api/internal/svc"
 	"realworld/cmd/api/internal/types"
 )
 
-// 删除文章
-func DelArticleHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+// 获取文章列表
+func GetArticleListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.DeleteArticleReq
+		var req types.GetArticleListReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := profile.NewDelArticleLogic(r.Context(), svcCtx)
-		resp, err := l.DelArticle(&req)
+		l := article.NewGetArticleListLogic(r.Context(), svcCtx)
+		resp, err := l.GetArticleList(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

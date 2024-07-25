@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
+	"realworld/common/xtoken"
+	"realworld/common/xtools"
 
 	"realworld/cmd/api/internal/svc"
 	"realworld/cmd/api/internal/types"
@@ -42,6 +44,15 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.UserResp, err error
 		return
 	}
 	// 刷新token
+	// 生成token
+	userToken, _ := xtoken.GenerateToken(user.Id, l.svcCtx.Config.JwtAuth.AccessSecret, user.UserName, req.Email)
+	// 保存token到redis中
+	err = l.svcCtx.RedisClient.Setex(xtools.GetUserTokenCacheKey(user.Id), userToken, l.svcCtx.Config.JwtAuth.AccessExpire)
+	if err != nil {
+		logx.Errorf("save user xtoken to redis failed: %v", err)
+		err = errors.New("save user xtoken to redis failed")
+		return
+	}
 	return &types.UserResp{
 		ID:       user.Id,
 		UserName: user.UserName,

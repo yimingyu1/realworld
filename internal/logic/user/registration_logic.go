@@ -6,8 +6,8 @@ import (
 	"errors"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"realworld/common/constant"
-	"realworld/common/tool"
 	"realworld/common/xtoken"
+	"realworld/common/xtools"
 	"realworld/model"
 
 	"realworld/cmd/api/internal/svc"
@@ -38,7 +38,7 @@ func (l *RegistrationLogic) Registration(req *types.RegistrationReq) (resp *type
 		err = errors.New("find user by email failed")
 		return
 	}
-	if user != nil && user.Email != req.Email {
+	if user != nil {
 		err = errors.New("user already exists")
 		return
 	}
@@ -65,7 +65,7 @@ func (l *RegistrationLogic) Registration(req *types.RegistrationReq) (resp *type
 	// 生成token
 	userToken, _ := xtoken.GenerateToken(userId, l.svcCtx.Config.JwtAuth.AccessSecret, req.UserName, req.Email)
 	// 保存token到redis中
-	err = l.svcCtx.RedisClient.Setex(tool.GetUserTokenCacheKey(userId), userToken, l.svcCtx.Config.JwtAuth.AccessExpire)
+	err = l.svcCtx.RedisClient.Setex(xtools.GetUserTokenCacheKey(userId), userToken, l.svcCtx.Config.JwtAuth.AccessExpire)
 	if err != nil {
 		logx.Errorf("save user xtoken to redis failed: %v", err)
 		err = errors.New("save user xtoken to redis failed")

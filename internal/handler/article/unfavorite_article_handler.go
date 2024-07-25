@@ -1,25 +1,25 @@
-package profile
+package article
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"realworld/cmd/api/internal/logic/profile"
+	"realworld/cmd/api/internal/logic/article"
 	"realworld/cmd/api/internal/svc"
 	"realworld/cmd/api/internal/types"
 )
 
-// 关注文章
-func FavoriteArticleHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+// 取消关注文章
+func UnfavoriteArticleHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.FavoriteArticleReq
+		var req types.UnfavoriteArticleReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := profile.NewFavoriteArticleLogic(r.Context(), svcCtx)
-		resp, err := l.FavoriteArticle(&req)
+		l := article.NewUnfavoriteArticleLogic(r.Context(), svcCtx)
+		resp, err := l.UnfavoriteArticle(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
